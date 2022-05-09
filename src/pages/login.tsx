@@ -4,7 +4,13 @@ import { useState } from "react";
 import Textfield from "../component/Textfield";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useAuth } from "../providers/AuthProvider";
+import UserHelper from "../helpers/UserHelper";
+import Cookies from "cookies";
+import { GetServerSidePropsContext } from "next";
+import { decodeToken } from "../helpers/jwt";
 const PageLogin = () => {
+  const { user, fetchUser } = useAuth();
   const [responseStatus, setResponseStatus] = useState<number | null>(null);
   const [loading, setLoading] = useState(null);
   const router = useRouter();
@@ -22,6 +28,7 @@ const PageLogin = () => {
           password: values.password,
         });
         setResponseStatus(res.status);
+        fetchUser();
         router.push("/");
       } catch (err) {
         console.error(err);
@@ -30,6 +37,12 @@ const PageLogin = () => {
       }
     },
   });
+
+  if (user) {
+    router.push("/");
+    return null;
+  }
+
   return (
     <>
       <Head>
@@ -39,6 +52,7 @@ const PageLogin = () => {
         <h1>Welcome back!</h1>
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-2">
           <Textfield
+            type="email"
             label="E-mail"
             name="email"
             value={formik.values.email}
@@ -48,6 +62,7 @@ const PageLogin = () => {
             disabled={loading}
           />
           <Textfield
+            type="password"
             label="Password"
             name="password"
             value={formik.values.password}
@@ -67,5 +82,21 @@ const PageLogin = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const cookies = new Cookies(context.req, context.res);
+  const token = cookies.get(process.env.AUTH_TOKEN_COOKIE);
+  if (token) {
+    const payload = decodeToken(token);
+    if (payload) {
+      context.res.setHeader("location", "/");
+      context.res.statusCode = 302;
+      context.res.end();
+      return;
+    }
+  }
+
+  return { props: {} };
+}
 
 export default PageLogin;

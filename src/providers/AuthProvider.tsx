@@ -4,8 +4,12 @@ import { JWTPayload } from "../helpers/jwt";
 
 interface AuthContextProps {
   user: JWTPayload | null;
+  fetchUser: () => void;
 }
-const AuthContext = createContext<AuthContextProps>({ user: null });
+const AuthContext = createContext<AuthContextProps>({
+  user: null,
+  fetchUser: () => {},
+});
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -27,7 +31,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, fetchUser }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

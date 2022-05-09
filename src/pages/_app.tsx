@@ -1,13 +1,15 @@
+import AppBar from "../component/AppBar";
 import AuthProvider from "../providers/AuthProvider";
 import "../styles/global.css";
 
 const App = ({ Component, pageProps }) => {
   return (
-    <div className="container">
-      <AuthProvider>
+    <AuthProvider>
+      <AppBar />
+      <div className="container">
         <Component {...pageProps} />
-      </AuthProvider>
-    </div>
+      </div>
+    </AuthProvider>
   );
 };
 

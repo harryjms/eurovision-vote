@@ -1,4 +1,5 @@
 import { User } from "@prisma/client";
+import { sendEmail } from "./email";
 import { hashPassword } from "./password";
 import { prisma } from "./prisma";
 
@@ -12,6 +13,7 @@ export default class UserHelper {
     const newUser = await prisma.user.create({
       data: { ...user, password: hash, salt },
     });
+
     return newUser.id;
   }
 
@@ -25,9 +27,5 @@ export default class UserHelper {
     return prisma.user.findFirst({
       where: { AND: [{ id }, { active: true }] },
     });
-  }
-
-  async getById(id: number) {
-    return prisma.user.findFirst({ where: { id } });
   }
 }

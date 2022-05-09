@@ -3,9 +3,11 @@ import Head from "next/head";
 import { useState } from "react";
 import Textfield from "../component/Textfield";
 import axios from "axios";
+import { useRouter } from "next/router";
 const PageLogin = () => {
   const [responseStatus, setResponseStatus] = useState<number | null>(null);
   const [loading, setLoading] = useState(null);
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -20,10 +22,10 @@ const PageLogin = () => {
           password: values.password,
         });
         setResponseStatus(res.status);
+        router.push("/");
       } catch (err) {
         console.error(err);
         setResponseStatus(err.response.status);
-      } finally {
         setLoading(false);
       }
     },

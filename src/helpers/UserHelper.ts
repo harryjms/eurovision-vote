@@ -26,4 +26,8 @@ export default class UserHelper {
       where: { AND: [{ id }, { active: true }] },
     });
   }
+
+  async getById(id: number) {
+    return prisma.user.findFirst({ where: { id } });
+  }
 }

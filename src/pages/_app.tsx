@@ -1,9 +1,12 @@
+import AuthProvider from "../providers/AuthProvider";
 import "../styles/global.css";
 
 const App = ({ Component, pageProps }) => {
   return (
     <div className="container">
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
     </div>
   );
 };

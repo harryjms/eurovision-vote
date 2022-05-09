@@ -15,6 +15,7 @@ const Register = () => {
       confirmPassword: "",
     },
     validationSchema: Yup.object({
+      name: Yup.string().required("Name required"),
       email: Yup.string()
         .email("Email does not appear to be valid")
         .required("You must enter an email"),

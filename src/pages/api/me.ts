@@ -12,7 +12,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const tokenCookie = cookies.get(process.env.AUTH_TOKEN_COOKIE);
         if (!tokenCookie) throw new HTTPError("Forbidden", 403);
         const payload = decodeToken(tokenCookie);
-        res.json(payload);
+        const userHelper = new UserHelper();
+        const user = await userHelper.getById(payload.id);
+        if (!user) throw new HTTPError("Unauthorized", 401);
+        res.json({ id: user.id, name: user.name });
         return;
       }
       default:

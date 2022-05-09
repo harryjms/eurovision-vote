@@ -18,4 +18,8 @@ export default class UserHelper {
   async getByEmail(email: string) {
     return prisma.user.findFirst({ where: { email } });
   }
+
+  async getById(id: number) {
+    return prisma.user.findFirst({ where: { id } });
+  }
 }

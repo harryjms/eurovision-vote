@@ -16,10 +16,14 @@ export default class UserHelper {
   }
 
   async getByEmail(email: string) {
-    return prisma.user.findFirst({ where: { email } });
+    return prisma.user.findFirst({
+      where: { AND: [{ email }, { active: true }] },
+    });
   }
 
   async getById(id: number) {
-    return prisma.user.findFirst({ where: { id } });
+    return prisma.user.findFirst({
+      where: { AND: [{ id }, { active: true }] },
+    });
   }
 }

@@ -5,10 +5,10 @@ import UserHelper from "../../helpers/UserHelper";
 import Cookies from "cookies";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const cookies = new Cookies(req, res);
   try {
     switch (req.method) {
       case "GET": {
-        const cookies = new Cookies(req, res);
         const tokenCookie = cookies.get(process.env.AUTH_TOKEN_COOKIE);
         if (!tokenCookie) throw new HTTPError("Forbidden", 403);
         const payload = decodeToken(tokenCookie);
@@ -24,6 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (err) {
     console.error(err);
     if (err instanceof HTTPError) {
+      cookies.set(process.env.AUTH_TOKEN_COOKIE, null);
       res.status(err.statusCode).send(err.message);
       return;
     }

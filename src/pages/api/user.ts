@@ -8,7 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     switch (req.method) {
       case "POST": {
         const { body } = req;
-        const user = await new UserHelper().create(JSON.parse(body));
+        const user = await new UserHelper().create(body);
         res.json(user);
         return;
       }

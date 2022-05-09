@@ -3,6 +3,7 @@ import Textfield from "../component/Textfield";
 import * as Yup from "yup";
 import axios from "axios";
 import { useState } from "react";
+import Head from "next/head";
 
 const Register = () => {
   const [responseStatus, setResponseStatus] = useState<number | null>(null);
@@ -48,68 +49,75 @@ const Register = () => {
     },
   });
   return (
-    <main className="max-w-md mx-auto">
-      {!responseStatus || responseStatus !== 200 ? (
-        <form onSubmit={formik.handleSubmit} className="flex flex-col gap-2">
-          <Textfield
-            type="name"
-            label="Name"
-            name="name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.name && formik.errors.name}
-            disabled={loading}
-          />
-          <Textfield
-            type="email"
-            label="E-mail"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.email && formik.errors.email}
-            disabled={loading}
-          />
-          <div className="flex gap-2 w-full">
+    <>
+      <Head>
+        <title>Register | Eurovision You Decide</title>
+      </Head>
+      <main className="max-w-md mx-auto">
+        <h1>Register</h1>
+        {!responseStatus || responseStatus !== 200 ? (
+          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-2">
             <Textfield
-              type="password"
-              label="Password"
-              name="password"
-              value={formik.values.password}
+              type="text"
+              label="Name"
+              name="name"
+              value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.password && formik.errors.password}
+              error={formik.touched.name && formik.errors.name}
               disabled={loading}
-              fullWidth
             />
             <Textfield
-              type="password"
-              label="Confirm Password"
-              name="confirmPassword"
-              value={formik.values.confirmPassword}
+              type="email"
+              label="E-mail"
+              name="email"
+              value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={
-                formik.touched.confirmPassword && formik.errors.confirmPassword
-              }
+              error={formik.touched.email && formik.errors.email}
               disabled={loading}
-              fullWidth
             />
-          </div>
-          {responseStatus !== null ? (
-            <div className="text-red-500 font-bold p-2 text-center">
-              Something went wrong
+            <div className="flex gap-2 w-full">
+              <Textfield
+                type="password"
+                label="Password"
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.password && formik.errors.password}
+                disabled={loading}
+                fullWidth
+              />
+              <Textfield
+                type="password"
+                label="Confirm Password"
+                name="confirmPassword"
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword
+                }
+                disabled={loading}
+                fullWidth
+              />
             </div>
-          ) : null}
-          <button type="submit" disabled={loading}>
-            Register
-          </button>
-        </form>
-      ) : (
-        <b>Registration successful</b>
-      )}
-    </main>
+            {responseStatus !== null ? (
+              <div className="text-red-500 font-bold p-2 text-center">
+                Something went wrong
+              </div>
+            ) : null}
+            <button type="submit" disabled={loading}>
+              Register
+            </button>
+          </form>
+        ) : (
+          <b>Registration successful</b>
+        )}
+      </main>
+    </>
   );
 };
 

@@ -18,4 +18,8 @@
   button:not(:disabled) {
     @apply hover:bg-blue-600 focus:ring-2 ring-blue-400;
   }
+
+  h1 {
+    @apply text-2xl font-black mb-2;
+  }
 }
